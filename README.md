@@ -4,10 +4,10 @@ A full-stack, remote wildlife detection and monitoring system. Streams live HLS 
 
 Built with a Raspberry Pi 5, an AWS EC2 backend, and a React-based frontend dashboard.
 
-![Build photo](docs/build-images/Deployed.jpg)  
-![Wiring Diagram](docs/Pi-Wildlife-Detection-System-Wiring-Diagram.jpg)
+![Build photo](docs/build-images/Deployed.JPG)  
+![Wiring Diagram](docs/Pi-Wildlife-Detection-System-Wiring-Diagram.JPG)
 
-I am a engineer with passion for embedded systems and photography. I wanted to make this project to demonstrate my skills and create something I can use for photography projects which can be used anywhere in the world to capture hard to reach places, scenes or wildlife. You can use the system to research behavioural and location analysis of wildlife and correlate that data against environmental parameters like: temperaure, pressure and humidity. What's more you don't have to wait to retrieve the results you can access them instantly online and don't have to trek back into the wild to pickup any gear.
+I am an engineer with passion for embedded systems and photography. I wanted to make this project to demonstrate my skills and create something I can use for photography projects which can be used anywhere in the world to capture hard to reach places, scenes or wildlife. You can use the system to research behavioural and location analysis of wildlife and correlate that data against environmental parameters like: temperaure, pressure and humidity. What's more you don't have to wait to retrieve the results you can access them instantly online and don't have to trek back into the wild to pickup any gear.
 
 In future the motion detection algorithm can be remotely updated and the potential is there to train an AI model to more specifically detect wildlife or events of interest.
 
