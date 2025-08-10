@@ -4,7 +4,15 @@ A full-stack, remote wildlife detection and monitoring system. Streams live HLS 
 
 Built with a Raspberry Pi 5, an AWS EC2 backend, and a React-based frontend dashboard.
 
-## [![Watch the video](https://img.youtube.com/vi/tZjDdPRHNxE/maxresdefault.jpg)](https://youtu.be/tZjDdPRHNxE)
+Watch the Video Below!
+
+## Demo Video
+
+[![Watch the video (click)](https://img.youtube.com/vi/tZjDdPRHNxE/maxresdefault.jpg)](https://youtu.be/tZjDdPRHNxE)
+
+[▶ **Watch the demo video on YouTube**](https://youtu.be/tZjDdPRHNxE)
+
+_Click the image or the "▶ Play video" button to watch it._
 
 ## ![Build photo](docs/build-images/Deployed.JPG)
 
