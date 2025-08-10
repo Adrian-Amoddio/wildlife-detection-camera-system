@@ -1,15 +1,16 @@
 # Wildlife Camera System
 
-End-to-end wildlife monitoring platform for remote, off-grid operation — designed to stream, detect motion, and capture high-resolution images from anywhere in the world.
+I designed and built a fully off grid, solar powered wildlife monitoring system. It can stream live video, log environmental data, and trigger my Canon EOS R6 for high-resolution stills remotely from anywhere with mobile reception.
 
-A fully self-contained, solar-powered wildlife monitoring platform built from scratch. Streams live video, collects environmental data, and remotely triggers a Canon EOS R6 for high resolution stills.
-Designed and implemented end-to-end using Raspberry Pi 5, Python/Flask, React, and AWS EC2, this project demonstrates skills in embedded systems, networking, API design, and modern web development.
+The system operates with a Raspberry Pi 5, Python/Flask backend, a React dashboard for camera / mode control and monitoring, and an AWS EC2 instance for streaming. I created everything myself and handled: picking the hardware, designing and fabricating the case, electronics wiring, networking, coding the APIs, and coding the front end website.
 
-Built end-to-end by me.
+The goal was to create a drop and leave anywhere device for photographing and researching wildlife in places that are hard to reach without having to hike back in to retrieve data or pickup heavy gear.
+
+Tech Summary: Raspberry Pi 5, Python, Flask, React, AWS EC2, NGINX RTMP/HLS, I²C sensor integration, Linux, CAD, Hands on Fabrication
 
 ---
 
-## 🎥 Demo
+## Demo
 
 [![Watch the demo](https://img.youtube.com/vi/tZjDdPRHNxE/maxresdefault.jpg)](https://youtu.be/tZjDdPRHNxE)  
 [▶ **Watch on YouTube**](https://youtu.be/tZjDdPRHNxE)
@@ -20,10 +21,10 @@ Built end-to-end by me.
 
 - **Hardware:** Raspberry Pi 5 (8GB), Pi Camera Module 3 Wide, Canon EOS R6 , PicoDev BMP280 sensor
 - **Pi software:** Python 3.11, `libcamera`, `ffmpeg`, `gphoto2`
-- **Backend (EC2):** NGINX RTMP/HLS, Flask (sensor data reciever)
-- **Frontend:** React + Recharts (live stream, environmental telemetry, Canon R6 capture, mode toggling)
-- **Protocols:** RTMP → HLS, REST (JSON), I²C (sensor)
-- **Power and Enclosure:** LiFePO₄ battery, solar panel, custom lens port + weather-resistant case
+- **Backend (EC2):** NGINX RTMP/HLS, Flask API for recieving sensor data
+- **Frontend:** React with Recharts, live video stream, environmental telemetry, Canon R6 capture, able to toggle modes
+- **Protocols:** RTMP to HLS, REST (JSON), I²C
+- **Power and Enclosure:** LiFePO₄ battery, solar panel, custom lens port and weather proof case
 
 ---
 
@@ -48,10 +49,6 @@ Built end-to-end by me.
 - **Smart and Reliable UX**: Sensor polling, stream retry logic, and clear error states in the UI.
 
 > **My role:** I designed and implemented the **entire system**—hardware choices, enclosure, Pi scripts, EC2 services, and the React frontend.
-
-I am an engineer with a passion for embedded systems and photography. I wanted to make this project to demonstrate my skills and create something I can use for photography projects which can be used anywhere in the world to capture hard to reach places, scenes or wildlife. You can use the system to research behavioural and location analysis of wildlife and correlate that data against environmental parameters like: temperature, pressure and humidity. What's more you don't have to wait to retrieve the results you can access them instantly online and don't have to trek back into the wild to pickup any gear.
-
-Future updates will include an advanced motion detection algorithm that can be remotely updated with a trained AI model to more specifically detect wildlife and events of interest.
 
 ---
 
@@ -93,11 +90,11 @@ Future updates will include an advanced motion detection algorithm that can be r
 │   ├── aluminium-flange-files/
 │   └── pmma-flange-files/
 │
-└── pi/                            # All scripts that run on the Pi for the different functions
+└── pi/                            # All scripts that run on the Pi for the different functions of the device
     ├── capture_api.py              # Remote still photo capture with the Canon EOS R6
     ├── motion_trigger_picamera2.py # Motion detection script that triggers the R6
     ├── send_sensor_data.py         # Sends sensor data to the EC2 backend
-    ├── start_stream.sh             # Used whenever the user switches into streaming mode
+    ├── start_stream.sh             # Used whenever the user switches into streaming mode. Cannot run when other scripts are accessing the pi camera 3 wide
     └── requirements.txt
 ```
 
@@ -238,6 +235,12 @@ The scripts below need to be run on boot if you want the system to operate indep
 - Ensure the EC2 instance is running before running any scripts on the pi or trying to access the front end.
 
 ---
+
+## Personal Note
+
+I am an engineer with a passion for embedded systems and photography. I wanted to make this project to demonstrate my skills and create something I can use for photography projects which can be used anywhere in the world to capture hard to reach places, scenes or wildlife. You can use the system to research behavioural and location analysis of wildlife and correlate that data against environmental parameters like: temperature, pressure and humidity. What's more you don't have to wait to retrieve the results you can access them instantly online and don't have to trek back into the wild to pickup any gear.
+
+Future updates will include an advanced motion detection algorithm that can be remotely updated with a trained AI model to more specifically detect wildlife and events of interest.
 
 ## Setup References
 
