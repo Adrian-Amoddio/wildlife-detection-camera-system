@@ -1,4 +1,4 @@
-// This is the main React app for the wildlife monitoring dashboard
+// This is the website for the wildlife monitoring dashboard
 // It handles video streaming, sensor data display, and mode switching between streaming and motion detection
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
@@ -17,11 +17,11 @@ import {
 } from "recharts";
 
 // Config
-const RETRY = { maxAttempts: 20, intervalMs: 2000 };
+const RETRY = { maxAttempts: 20, interval: 2000 };
 const POLL = {
-  sensorMs: 10_000,
-  imageMs: 30_000,
-  modeMs: 5_000,
+  sensorTime: 10_000,
+  imageTime: 30_000,
+  modeTime: 5_000,
 };
 const MODE = { STREAM: "stream", MOTION: "motion", UNKNOWN: "unknown" };
 
@@ -78,8 +78,7 @@ function App() {
   const imageEndpoint = `${apiBase}/latest-image`;
   const captureEndpoint = `${apiBase}/capture`;
 
-  // Check if HLS is supported. Attach to <video> element.
-  // If not supported, fallback to native HLS support in Safari.
+  // Check if HLS is supported. Attach to <video> element. If not supported, use native HLS support in Safari.
   const attachHls = useCallback(
     (url) => {
       const video = videoRef.current;
@@ -117,9 +116,9 @@ function App() {
         .catch(() => {
           attempts += 1;
           if (attempts < RETRY.maxAttempts) {
-            setTimeout(check, RETRY.intervalMs);
+            setTimeout(check, RETRY.interval);
           } else {
-            setError("Stream unavailable after retries.");
+            setError("Stream unavailable after retries");
           }
         });
     };
@@ -127,7 +126,7 @@ function App() {
     check();
   }, [attachHls, streamURL]);
 
-  // When in STREAM mode, attach HLS to the <video>. On mode change, hard-reset the element.
+  // When in STREAM mode, attach HLS to the <video>. 
   useEffect(() => {
     if (mode !== MODE.STREAM) return;
 
@@ -165,7 +164,7 @@ function App() {
             time: new Date().toLocaleTimeString(),
             temperature: Number.parseFloat(Number(data.temperature).toFixed(2)),
             humidity: Number.parseFloat(Number(data.humidity).toFixed(2)),
-            // Convert Pa to kPa
+            // Convert Pa to kPa. The sensor initially reads in Pa.
             pressure: Number.parseFloat(Number(data.pressure / 1000).toFixed(2)),
           };
           const MAX_POINTS = 20;
@@ -177,7 +176,7 @@ function App() {
     };
 
     fetchSensor();
-    const id = setInterval(fetchSensor, POLL.sensorMs);
+    const id = setInterval(fetchSensor, POLL.sensorTime);
     return () => {
       cancelled = true;
       clearInterval(id);
@@ -188,11 +187,11 @@ function App() {
   useEffect(() => {
     const refresh = () => setImageURL(`${imageEndpoint}?t=${Date.now()}`);
     refresh();
-    const id = setInterval(refresh, POLL.imageMs);
+    const id = setInterval(refresh, POLL.imageTime);
     return () => clearInterval(id);
   }, [imageEndpoint]);
 
-  // Keep UI in sync with backend mode (stream vs motion). If API drops, show banner.
+  // Keep UI in sync with backend mode (stream vs motion). This occasionally kept getting unlinked
   useEffect(() => {
     let cancelled = false;
 
@@ -211,7 +210,7 @@ function App() {
     };
 
     fetchMode();
-    const id = setInterval(fetchMode, POLL.modeMs);
+    const id = setInterval(fetchMode, POLL.modeTime);
     return () => {
       cancelled = true;
       clearInterval(id);
@@ -236,7 +235,7 @@ function App() {
           next = m.mode;
           break;
         }
-        // eslint-disable-next-line no-await-in-loop
+        
         await new Promise((r) => setTimeout(r, 1000));
       }
 
@@ -250,7 +249,7 @@ function App() {
     }
   };
 
-  // Ask backend to take a still; wait 3 sec, then refresh image preview
+  // Send POST request to backend to take a still on the R6.  Wait 3 seconds then refresh the image preview
   const handleCapture = async () => {
     try {
       const res = await fetch(captureEndpoint, { method: "POST" });
@@ -268,7 +267,7 @@ function App() {
     <div className="container">
       <h1>Wildlife Monitoring Dashboard</h1>
 
-      {/* If the API drops, make it obvious */}
+      {/* If it can't connect to the Backend API or connection drops make this clear at the top of the UI */}
       {!apiOnline && <p className="error">Backend API offline</p>}
 
       <div className="video-wrapper">
@@ -310,7 +309,7 @@ function App() {
         ) : error ? (
           <p className="error">{error}</p>
         ) : (
-          // Avoid a broken-image feel while sensors load
+          // Placeholder spinner while loading sensor data
           <div className="spinner" aria-label="Loading sensors…" />
         )}
       </div>
@@ -325,7 +324,7 @@ function App() {
             src={imageURL}
             alt="Latest still"
             onError={(e) => {
-              // Fallback so the UI doesn't show a broken image while the file is still uploading
+              // Default image so the UI doesn't show a broken image while the file is still uploading
               e.currentTarget.src = "/placeholder.jpg";
             }}
           />

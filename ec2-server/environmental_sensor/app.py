@@ -1,9 +1,8 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-
-
 # This is a Flask application that allows for receiving sensor data from a Raspberry Pi.
 # The send_sensor_data.py script runs on the pi and sends temperature, pressure, and humidity data to this server, which can be accessed via a web interface or API.
+
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)  # Allow cross-origin requests (important for React)

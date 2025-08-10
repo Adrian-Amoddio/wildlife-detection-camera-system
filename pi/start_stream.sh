@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#When run, this script will kill any processes that are currently using the pi camera module 3 wide such as the motion detection script. 
+#You cannot run the streaming command while another process is using the camera.
+
+
+
 # Kill any previous ffmpeg or libcamera-vid streams 
 pkill -f "libcamera-vid"
 pkill -f "ffmpeg"
