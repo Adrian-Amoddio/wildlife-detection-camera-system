@@ -1,0 +1,33 @@
+# Node / React
+node_modules/
+build/
+dist/
+.cache/
+npm-debug.log*
+yarn-error.log*
+.env
+.env.*.local
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+env/
+venv/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+logs/
+*.log
+
+# Archives & big binaries
+*.zip
+*.7z
+*.tar
+*.gz
+*.iso

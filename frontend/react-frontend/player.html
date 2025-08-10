@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Wildlife Stream & Sensor Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <h1 class="page-title">Wildlife Stream & Sensor Dashboard</h1>
+
+    <div class="video-container">
+      <video id="hls-video" 
+      class="video-js vjs-default-skin" 
+      controls 
+      autoplay 
+      muted 
+      width="640" 
+      height="360"
+      ></video>
+
+    </div>
+
+    <!-- Sensor data display -->
+    <div id="sensor-data">
+      <p>Temperature: <span id="temp">...</span> °C</p>
+      <p>Pressure: <span id="pressure">...</span> kPa</p>
+      <p>Humidity: <span id="humidity">...</span> %</p>
+    </div>
+
+    <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-hls@5.15.0/dist/videojs-contrib-hls.min.js"></script>
+    <script>
+      // Video player here
+      var player = videojs('hls-video');
+      player.src({
+        src: "http://<ec2-server-ip>/hls/test_720p2628kbs/index.m3u8",
+        type: "application/x-mpegURL"
+      });
+    </script>
+
+    <script>
+      async function fetchSensorData() {
+        try {
+          const res = await fetch('http://<ec2-server-ip>:5000/sensor');
+          const data = await res.json();
+          document.getElementById('temp').textContent = data.temperature.toFixed(2);
+          document.getElementById('pressure').textContent = data.pressure.toFixed(2);
+          document.getElementById('humidity').textContent = data.humidity.toFixed(2);
+        } catch (err) {
+          console.error('Error fetching sensor data:', err);
+        }
+      }
+
+      // Fetch every 10 seconds
+      fetchSensorData();
+      setInterval(fetchSensorData, 10000);
+    </script>
+  </body>
+</html>
