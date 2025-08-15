@@ -2,7 +2,7 @@
 
 I designed and built a fully off grid, solar powered wildlife monitoring system. It can stream live video, log environmental data, and trigger my Canon EOS R6 for high-resolution stills remotely from anywhere with mobile reception.
 
-The system operates with a Raspberry Pi 5, Python/Flask backend, a React dashboard for camera / mode control and monitoring, and an AWS EC2 instance for streaming. I created everything myself and handled: picking the hardware, designing and fabricating the case, electronics wiring, networking, coding the APIs, and coding the front end website.
+The system operates with a Raspberry Pi 5, Python/Flask backend, a React dashboard for camera / mode control and monitoring, and an AWS EC2 instance for streaming with a dockerized NGINX server with RTMP to HLS conversion. I created everything myself and handled: picking the hardware, designing and fabricating the case, electronics wiring, networking, coding the APIs, and coding the front end website.
 
 The goal was to create a drop and leave anywhere device for photographing and researching wildlife in places that are hard to reach without having to hike back in to retrieve data or pickup heavy gear.
 
@@ -21,7 +21,7 @@ Tech Summary: Raspberry Pi 5, Python, Flask, React, AWS EC2, NGINX RTMP/HLS, I²
 
 - **Hardware:** Raspberry Pi 5 (8GB), Pi Camera Module 3 Wide, Canon EOS R6 , PicoDev BMP280 sensor
 - **Pi software:** Python 3.11, `libcamera`, `ffmpeg`, `gphoto2`
-- **Backend (EC2):** NGINX RTMP/HLS, Flask API for recieving sensor data
+- **Backend (EC2):** Dockerized NGINX RTMP/HLS streaming server, Flask API for recieving sensor data
 - **Frontend:** React with Recharts, live video stream, environmental telemetry, Canon R6 capture, able to toggle modes
 - **Protocols:** RTMP to HLS, REST (JSON), I²C
 - **Power and Enclosure:** LiFePO₄ battery, solar panel, custom lens port and weather proof case
@@ -73,7 +73,7 @@ Tech Summary: Raspberry Pi 5, Python, Flask, React, AWS EC2, NGINX RTMP/HLS, I²
 │   └── nginx-rtmp/                 # RTMP/HLS server
 │       ├── docker-compose.yml
 │       ├── nginx.conf
-│       └── nginx-hls/
+│       └── nginx-hls/              # RTMP to HLS Docker build for NGINX
 │
 ├── frontend/                      # Front End React Website
 │   └── react-frontend/
@@ -225,6 +225,16 @@ The scripts below need to be run on boot if you want the system to operate indep
 
 - `capture_api.py`
 - `send_sensor_data.py`
+
+---
+
+## Streaming Pipeline (RTMP converted to HLS)
+
+The Pi streams video via **RTMP** to an **NGINX server** running on my EC2 instance. This server is inside a Docker container and uses the **NGINX RTMP module** to convert the incoming stream into **HLS**. The frontend React app then pulls the `.m3u8` playlist from the server to display the live video in the browser. The reason why I converted the stream from RTMP to HLS is because browsers do not natively support RTMP streams. HLS is natively supported in most browsers.
+
+- The NGINX config and Docker setup are located in `ec2-server/nginx-rtmp/`
+- The stream can be viewed from anywhere by accessing the React frontend
+- During local testing, I used a prebuilt Windows release of NGINX with RTMP from [Broukmiken/Nginx.exe-RTMP](https://github.com/Broukmiken/Nginx.exe-32-and-64-bits-With-RTMP/releases/tag/v1.24.4) for fast iteration before deploying the Docker version to AWS
 
 ---
 
