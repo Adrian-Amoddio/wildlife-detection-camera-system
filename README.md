@@ -1,5 +1,7 @@
 # Wildlife Camera System
 
+[![GitHub stars](https://img.shields.io/github/stars/Adrian-Amoddio/wildlife-detection-camera-system?style=social)](https://github.com/Adrian-Amoddio/wildlife-detection-camera-system/stargazers)
+
 I designed and built a fully off grid, solar powered wildlife monitoring system. It can stream live video, log environmental data, and trigger my Canon EOS R6 for high-resolution stills remotely from anywhere with mobile reception.
 
 The system operates with a Raspberry Pi 5, Python/Flask backend, a React dashboard for camera / mode control and monitoring, and an AWS EC2 instance for streaming with a dockerized NGINX server with RTMP to HLS conversion. I created everything myself and handled: picking the hardware, designing and fabricating the case, electronics wiring, networking, coding the APIs, and coding the front end website.
