@@ -13,6 +13,8 @@ The system operates with a Raspberry Pi 5, Python/Flask backend, a React dashboa
 
 The goal was to create a drop and leave anywhere device for photographing and researching wildlife in places that are hard to reach without having to hike back in to retrieve data or pickup heavy gear.
 
+As an improvement to the project, I recently added a YOLOv8 animal detection prototype script that can detect various species of wildlife. Once deployed to the Pi, the system has the potential to selectively take photographs only of animals of interest and categorise them accordingly.
+
 Tech Summary: Raspberry Pi 5, Python, Flask, React, AWS EC2, Docker, NGINX RTMP/HLS, I²C sensor integration, Linux, CAD, Hands on Fabrication
 
 ---
