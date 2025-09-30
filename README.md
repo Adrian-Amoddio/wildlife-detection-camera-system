@@ -52,6 +52,22 @@ Tech Summary: Raspberry Pi 5, Python, Flask, React, AWS EC2, Docker, NGINX RTMP/
 
 ---
 
+## AI Object Detection Prototype
+
+To extend the system toward AI integration, I added a prototype object detection module using [YOLOv8](https://github.com/ultralytics/ultralytics).  
+This prototype demonstrates how the camera feed could be enhanced with real-time wildlife recognition.
+
+- **Model:** YOLOv8n (pretrained on COCO dataset)  
+- **Current capabilities:** Detects common animals such as dogs, cats, birds, elephants, giraffes, zebras, and more  
+- **Demo:** Inference run on sample wildlife images, with annotated outputs saved in [`object_detection/runs/detect/pi_demo`](object_detection/runs/detect/pi_demo)  
+- **Future plan:** Deploy lightweight YOLO models directly on the Raspberry Pi or stream frames to the EC2 server for faster inference, and fine-tune models for Australian wildlife species (e.g. kangaroos, wombats, koalas).
+
+**Example output:**
+
+![Object Detection Example](object_detection/runs/detect/pi_demo/bear.jpg)
+
+---
+
 ## Project Structure
 
 ```
@@ -85,6 +101,11 @@ Tech Summary: Raspberry Pi 5, Python, Flask, React, AWS EC2, Docker, NGINX RTMP/
 │           ├── public/
 │           └── src/
 │
+├── object_detection/            # Inludes sample images and results that demo the animal detection model
+│   ├── runs/
+│   ├── samples/
+│   └── detect.py
+
 ├── hardware/                      # CAD/drawings for custom lens port for Canon R6
 │   ├── acrylic-flange-files/
 │   ├── aluminium-flange-files/
