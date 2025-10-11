@@ -42,6 +42,10 @@ Tech Summary: Raspberry Pi 5, Python, Flask, React, AWS EC2, Docker, NGINX RTMP/
 
 ---
 
+## ![Data Flow Diagram](docs/system_diagram_v1.png)
+
+---
+
 ## What it does
 
 - **Live stream**: Low-latency HLS stream from the Pi → EC2 → React front end
