@@ -30,4 +30,4 @@ def get_latest_data():
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
 
-(venv) ubuntu@ip-172-31-3-78: ~/sensor-server$
+
