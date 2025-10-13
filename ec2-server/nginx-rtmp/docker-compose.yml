@@ -1,4 +1,4 @@
-version: "3.8"
+
 
 services:
   nginx-rtmp:
@@ -8,6 +8,6 @@ services:
       - "80:80"
       - "1935:1935"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf
       - ./nginx-hls:/opt/data/hls
     restart: unless-stopped
