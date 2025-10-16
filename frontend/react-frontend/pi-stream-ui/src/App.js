@@ -70,6 +70,12 @@ function App() {
 
   const [apiOnline, setApiOnline] = useState(true);
   const [error, setError] = useState(null);
+  //---------------------------------
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiDetections, setAiDetections] = useState([]);
+  const [aiImageURL, setAiImageURL] = useState(null);
+  const [aiError, setAiError] = useState("");
+
 
   // .env load
   const streamURL = process.env.REACT_APP_STREAM_URL;
@@ -77,6 +83,9 @@ function App() {
   const apiBase = process.env.REACT_APP_API_BASE;
   const imageEndpoint = `${apiBase}/latest-image`;
   const captureEndpoint = `${apiBase}/capture`;
+  //---------------------------------
+  const detectEndpoint = `${apiBase}/ai/detect`;
+
 
   // Check if HLS is supported. Attach to <video> element. If not supported, use native HLS support in Safari.
   const attachHls = useCallback(
@@ -249,6 +258,8 @@ function App() {
     }
   };
 
+
+
   // Send POST request to backend to take a still on the R6.  Wait 3 seconds then refresh the image preview
   const handleCapture = async () => {
     try {
@@ -261,6 +272,31 @@ function App() {
       setError("Failed to capture image");
     }
   };
+
+  // Send Post Request to initialise AI animal detection
+  const handleAIDetect = async () => {
+  setAiLoading(true);
+  setAiError("");
+  setAiDetections([]);
+  setAiImageURL(null);
+
+  try {
+    const res = await fetch(detectEndpoint, { method: "POST" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+
+    setAiDetections(data?.detections || []);
+    if (data?.annotated_image) {
+      // backend returns like "/static/detect_*.jpg"
+      setAiImageURL(`${apiBase}${data.annotated_image}`);
+    }
+    } catch (e) {
+      setAiError(String(e));
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
 
   // Render
   return (
@@ -330,6 +366,38 @@ function App() {
           />
         )}
       </div>
+
+      <div className="capture-section">
+        <h2>AI Detection</h2>
+        <button onClick={handleAIDetect} disabled={aiLoading} title="Run YOLOv8 on the Pi">
+          {aiLoading ? "Detecting…" : "AI Detect"}
+        </button>
+
+        {aiError && <p className="error" style={{ marginTop: 8 }}>{aiError}</p>}
+
+        {!!aiDetections.length && (
+          <div style={{ marginTop: 8 }}>
+            <strong>Detections ({aiDetections.length}):</strong>
+            <ul>
+              {aiDetections.map((d, i) => (
+                <li key={i}>
+                  {d.label} ({d.conf}) — [{d.bbox.map(n => Math.round(n)).join(", ")}]
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {aiImageURL && (
+          <img
+            src={aiImageURL}
+            alt="Annotated detection"
+            style={{ maxWidth: 480, marginTop: 8 }}
+            onError={(e) => { e.currentTarget.src = "/placeholder.jpg"; }}
+          />
+        )}
+      </div>
+
     </div>
   );
 }
